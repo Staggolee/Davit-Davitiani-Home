@@ -56,3 +56,14 @@ completedTodos.forEach(function (todo) {
     compTodo.textContent = `${todo.text}`
     document.querySelector('body').appendChild(compTodo)
 })
+
+// Listen for new todo creation
+let button = document.querySelector('#add-todo')
+button.addEventListener('click', function(e) {
+    console.log('Button pressed!')
+})
+
+// Listen for todo text change
+document.querySelector('#new-todo').addEventListener('input', function (e) {
+    console.log(e.target.value)
+})
