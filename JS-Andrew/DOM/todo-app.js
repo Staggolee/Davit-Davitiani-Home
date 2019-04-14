@@ -25,45 +25,61 @@ const todos = [{
                 completed: false
             }]
 
+            
 
 //Challenge : you have 2 todos left; add a p for each todo
 
-let messageP = document.createElement('h2');
-document.querySelector('body').appendChild(messageP)
+//filter challenge : setup div, setup filters(searchText), create renderTodos
 
-const incompletedTodos = todos.filter(function (todo) {
-    return !todo.completed
-})
+const filters = {
+    searchText : ''
+}
 
-const completedTodos = todos.filter(function (todo) {
-    return todo.completed
-})
+const filterTodo = function (todos, filters) {
+    const filteredTodo = todos.filter(function (todo) {
+        return todo.text.toLowerCase().includes(filters.searchText.toLowerCase())
+    })
 
-incompletedTodos.forEach(function (todo) {
-    newTodo = document.createElement('p')
-    newTodo.textContent = `${todo.text}`
-    document.querySelector('body').appendChild(newTodo)
-})
+    document.querySelector('#todos').innerHTML = ''
+    
+    filteredTodo.forEach(function (todo) {
+        let newTodo = document.createElement('p')
+        newTodo.textContent = todo.text
+        document.querySelector('#todos').appendChild(newTodo)
 
-messageP.textContent = `You have ${incompletedTodos.length} todos left:`
+    })
+    
+    const incompletedTodos = filteredTodo.filter(function (todo) {
+        return !todo.completed
+    })
+        
+    let messageP = document.createElement('h2');
+        document.querySelector('#todos').appendChild(messageP)
+        
 
-let messageCompleted = document.createElement('h2');
-document.querySelector('body').appendChild(messageCompleted)
-messageCompleted.textContent = `You completed ${completedTodos.length} todos:`
 
-completedTodos.forEach(function (todo) {
-    compTodo = document.createElement('p')
-    compTodo.textContent = `${todo.text}`
-    document.querySelector('body').appendChild(compTodo)
-})
+    incompletedTodos.forEach(function (todo) {
+        newTodo = document.createElement('p')
+        newTodo.textContent = `${todo.text}`
+        document.querySelector('#todos').appendChild(newTodo)
+    })
+
+    messageP.textContent = `You have ${incompletedTodos.length} todos left:`
+
+    }
+
 
 // Listen for new todo creation
-let button = document.querySelector('#add-todo')
-button.addEventListener('click', function(e) {
+document.querySelector('#add-todo').addEventListener('click', function(e) {
     console.log('Button pressed!')
 })
 
 // Listen for todo text change
 document.querySelector('#new-todo').addEventListener('input', function (e) {
     console.log(e.target.value)
+    
+})
+document.querySelector('#filter-todo').addEventListener('input', function (e) {
+    filters.searchText = e.target.value
+    filterTodo(todos, filters)
 })
