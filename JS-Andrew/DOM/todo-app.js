@@ -32,33 +32,35 @@ const todos = [{
 //filter challenge : setup div, setup filters(searchText), create renderTodos
 
 const filters = {
-    searchText : ''
+    searchText : '',
+    hideCompleted : false
 }
 
 const filterTodo = function (todos, filters) {
-    const filteredTodo = todos.filter(function (todo) {
+    let filteredTodo = todos.filter(function (todo) {
         return todo.text.toLowerCase().includes(filters.searchText.toLowerCase())
     })
 
-    document.querySelector('#todos').innerHTML = ''
-    
-    filteredTodo.forEach(function (todo) {
-        let newTodo = document.createElement('p')
-        newTodo.textContent = todo.text
-        document.querySelector('#todos').appendChild(newTodo)
-
+    filteredTodo = filteredTodo.filter(function (todo) {
+        if(filters.hideCompleted) {
+            return !todo.completed
+        } else {
+            return true
+        }
     })
-    
+
     const incompletedTodos = filteredTodo.filter(function (todo) {
         return !todo.completed
     })
-        
+   
+    document.querySelector('#todos').innerHTML = ''
+    
     let messageP = document.createElement('h2');
         document.querySelector('#todos').appendChild(messageP)
         
 
 
-    incompletedTodos.forEach(function (todo) {
+    filteredTodo.forEach(function (todo) {
         newTodo = document.createElement('p')
         newTodo.textContent = `${todo.text}`
         document.querySelector('#todos').appendChild(newTodo)
@@ -70,16 +72,24 @@ const filterTodo = function (todos, filters) {
 
 
 // Listen for new todo creation
-document.querySelector('#add-todo').addEventListener('click', function(e) {
-    console.log('Button pressed!')
-})
+
 
 // Listen for todo text change
-document.querySelector('#new-todo').addEventListener('input', function (e) {
-    console.log(e.target.value)
-    
-})
+
 document.querySelector('#filter-todo').addEventListener('input', function (e) {
     filters.searchText = e.target.value
     filterTodo(todos, filters)
+})
+
+document.querySelector('#todo-form').addEventListener('submit', function (e) {
+    e.preventDefault()
+    todos.push({text: e.target.elements.newTodo.value, completed: false})
+    e.target.elements.newTodo.value = ''
+    filterTodo(todos, filters)
+})
+
+document.querySelector('#hide-todo').addEventListener('change', function (e) {
+    filters.hideCompleted = e.target.checked 
+    filterTodo(todos, filters)
+    console.log(filters)
 })
