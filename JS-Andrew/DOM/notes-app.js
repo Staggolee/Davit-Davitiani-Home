@@ -1,37 +1,46 @@
-const notes = [{
-                title: 'My next trip',
-                body: 'I would like to go to Spain'
-            }, {
-                title: 'Habbits to work on',
-                body: 'Exercise. Eating a bit better'
-            }, {
-                title: 'Office modifications',
-                body: 'Get a new seat'
-            }]
+let notes = []
 
  const filters = {
                 searchText: ''
             }
 
-        const renderNotes = function (notes, filters) {
-            const filteredNotes = notes.filter(function (note) {
-                return note.title.toLowerCase().includes(filters.searchText.toLowerCase())
-            })
+//Check for existing saved data
+const notesJSON = localStorage.getItem('notes')
 
-            document.querySelector('#notes').innerHTML = ''
+if(notesJSON !== null) {
+    notes = JSON.parse(notesJSON)
+}
 
-            filteredNotes.forEach(function (note) {
-                const noteEL = document.createElement('p')
-                noteEL.textContent = note.title
-                document.querySelector('#notes').appendChild(noteEL)
-            })
+const renderNotes = function (notes, filters) {
+    const filteredNotes = notes.filter(function (note) {
+        return note.title.toLowerCase().includes(filters.searchText.toLowerCase())
+    })
+
+    document.querySelector('#notes').innerHTML = ''
+
+    filteredNotes.forEach(function (note) {
+        const noteEL = document.createElement('p')
+
+        if (note.title.length > 0) {
+           noteEL.textContent = note.title 
+        } else {
+            noteEL.textContent = 'Unnamed note'
         }
+
+        document.querySelector('#notes').appendChild(noteEL)
+    })
+ }
 
         renderNotes(notes, filters)
 
 document.querySelector('#create-note').addEventListener('click', function (e) {
-    e.target.textContent = 'The button was clicked!'
-    
+    notes.push({
+        title: '',
+        body: ''
+    })
+    console.log(notes)
+    localStorage.setItem('notes', JSON.stringify(notes))
+    renderNotes(notes, filters)
 })
 
 
@@ -42,6 +51,6 @@ document.querySelector('#search-text').addEventListener('input', function (e){
     
 })
 
-document.querySelector('#for-fun').addEventListener('change', function (e) {
-    console.log(e.target.checked)
+document.querySelector('#filter-by').addEventListener('change', function (e) {
+    console.log(e.target.value)
 })
