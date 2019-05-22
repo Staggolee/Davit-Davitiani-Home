@@ -1,0 +1,15 @@
+
+.nav {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+
+.nav .link {
+    padding: 5px;
+}
+
+.is-active {
+    font-weight: bold;
+    
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import App from './App';
+
 
 class SearchBar extends React.Component {
     state = {term: ''};
@@ -18,6 +18,7 @@ class SearchBar extends React.Component {
             <div className="field">
                 <label>Book Search</label>
                 <input 
+                placeholder="Search Any Book Here"
                 type="text" 
                 value={this.state.term} 
                 onChange={ (e) => this.setState({ term: e.target.value}) }/>

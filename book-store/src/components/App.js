@@ -1,7 +1,10 @@
 import React from 'react';
+import AppRouter from '../router/AppRouter';
 import GbooksApi from '../api/GbooksApi';
 import SearchBar from './SearchBar';
 import BookList from './bookLIst';
+
+
 
 class App extends React.Component {
     state = {
@@ -22,7 +25,9 @@ class App extends React.Component {
 
     render() {
         return (
-         <div className="ui container" style={{marginTop: '10px'}}>
+        
+        <div className="ui container" style={{marginTop: '10px'}}>
+        <AppRouter />
         <SearchBar onSubmit={this.onSearchSubmit} />
         <BookList books={this.state.books} />
     </div>
